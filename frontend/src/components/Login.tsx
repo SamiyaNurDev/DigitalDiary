@@ -208,7 +208,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 sm:mb-6 md:mb-10 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   Welcome Back
                 </h2>
-                <label htmlFor="signin-username" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+                <label htmlFor="signin-username" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                   Username
                 </label>
                 <input
@@ -217,11 +217,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   placeholder="Enter your username"
                   value={signInUsername}
                   onChange={(e) => setSignInUsername(e.target.value)}
-                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                           focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                           transition-all duration-300 hover:border-slate-300"
+                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                           bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                           placeholder:text-slate-400 dark:placeholder:text-gray-300
+                           focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                           transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
                 />
-                <label htmlFor="signin-password" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+                <label htmlFor="signin-password" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                   Password
                 </label>
                 <input
@@ -230,9 +232,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   placeholder="Enter your password"
                   value={signInPassword}
                   onChange={(e) => setSignInPassword(e.target.value)}
-                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                           focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                           transition-all duration-300 hover:border-slate-300"
+                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                           bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                           placeholder:text-slate-400 dark:placeholder:text-gray-300
+                           focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                           transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
                 />
                 <div className="flex items-center mb-3 sm:mb-4 md:mb-6 text-xs sm:text-sm text-slate-600">
                   <input
@@ -265,7 +269,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 sm:mb-6 md:mb-10 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   Create Account
                 </h2>
-                <label htmlFor="signup-username" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+                <label htmlFor="signup-username" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                   Username
                 </label>
                 <input
@@ -274,11 +278,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   placeholder="Enter your username"
                   value={signUpUsername}
                   onChange={(e) => setSignUpUsername(e.target.value)}
-                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                           focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                           transition-all duration-300 hover:border-slate-300"
+                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                           bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                           placeholder:text-slate-400 dark:placeholder:text-gray-300
+                           focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                           transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
                 />
-                <label htmlFor="signup-email" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+                <label htmlFor="signup-email" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                   Email
                 </label>
                 <input
@@ -287,11 +293,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   placeholder="Enter your email"
                   value={signUpEmail}
                   onChange={(e) => setSignUpEmail(e.target.value)}
-                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                           focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                           transition-all duration-300 hover:border-slate-300"
+                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                           bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                           placeholder:text-slate-400 dark:placeholder:text-gray-300
+                           focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                           transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
                 />
-                <label htmlFor="signup-password" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+                <label htmlFor="signup-password" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                   Password
                 </label>
                 <input
@@ -300,9 +308,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   placeholder="Enter your password"
                   value={signUpPassword}
                   onChange={(e) => setSignUpPassword(e.target.value)}
-                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                           focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                           transition-all duration-300 hover:border-slate-300"
+                  className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                           bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                           placeholder:text-slate-400 dark:placeholder:text-gray-300
+                           focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                           transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
                 />
                 <button 
                   type="submit"
@@ -320,7 +330,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 sm:mb-6 md:mb-10 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 Reset Password
               </h2>
-              <label htmlFor="reset-email" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+              <label htmlFor="reset-email" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                 Email
               </label>
               <input
@@ -329,11 +339,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 placeholder="Enter your email"
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
-                className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                         focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                         transition-all duration-300 hover:border-slate-300"
+                className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                         bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                         placeholder:text-slate-400 dark:placeholder:text-gray-300
+                         focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                         transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
               />
-              <label htmlFor="reset-new-password" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+              <label htmlFor="reset-new-password" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                 New Password
               </label>
               <input
@@ -342,11 +354,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 placeholder="Enter your new password"
                 value={resetNewPassword}
                 onChange={(e) => setResetNewPassword(e.target.value)}
-                className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                         focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                         transition-all duration-300 hover:border-slate-300"
+                className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                         bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                         placeholder:text-slate-400 dark:placeholder:text-gray-300
+                         focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                         transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
               />
-              <label htmlFor="reset-confirm-password" className="block text-left mb-1 sm:mb-2 text-slate-700 font-semibold text-xs sm:text-sm">
+              <label htmlFor="reset-confirm-password" className="block text-left mb-1 sm:mb-2 text-slate-800 dark:text-slate-900 font-semibold text-xs sm:text-sm">
                 Confirm Password
               </label>
               <input
@@ -355,9 +369,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 placeholder="Confirm your new password"
                 value={resetConfirmPassword}
                 onChange={(e) => setResetConfirmPassword(e.target.value)}
-                className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-800 font-medium text-sm sm:text-base
-                         focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:outline-none
-                         transition-all duration-300 hover:border-slate-300"
+                className="w-full px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 mb-2 sm:mb-3 md:mb-4 border-2 border-slate-200 dark:border-gray-500 rounded-xl sm:rounded-2xl 
+                         bg-white dark:bg-gray-700 text-slate-800 dark:text-white font-medium text-sm sm:text-base
+                         placeholder:text-slate-400 dark:placeholder:text-gray-300
+                         focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:outline-none
+                         transition-all duration-300 hover:border-slate-300 dark:hover:border-gray-400"
               />
               <button 
                 type="submit"

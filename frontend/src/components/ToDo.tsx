@@ -43,6 +43,13 @@ const TodoList: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Fetch trash items when trash view is opened
+    if (showTrash) {
+      fetchTrashItems();
+    }
+  }, [showTrash]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setTodolists(prev => [...prev]);
     }, 60000);
@@ -54,11 +61,43 @@ const TodoList: React.FC = () => {
       const response = await axios.get<Todo[]>('/todo');
       // Ensure response.data is always an array
       const todosArray = Array.isArray(response.data) ? response.data : [];
-      setTodolists(todosArray);
+      // Merge with existing todos to preserve deleted items in state
+      setTodolists((prevTodos) => {
+        const activeIds = new Set(todosArray.map(t => t.id));
+        // Keep deleted items from previous state
+        const keptDeleted = prevTodos.filter(t => t.is_deleted && !activeIds.has(t.id));
+        // Create a map of existing todos by ID to preserve local state for items being updated
+        const existingMap = new Map(prevTodos.map(t => [t.id, t]));
+        // Update active items, preserving any local changes (like just-deleted status)
+        const updatedActive = todosArray.map(activeTodo => {
+          const existing = existingMap.get(activeTodo.id);
+          // If item was just marked as deleted locally, keep it deleted
+          if (existing && existing.is_deleted) {
+            return existing;
+          }
+          return activeTodo;
+        });
+        return [...updatedActive, ...keptDeleted];
+      });
     } catch (error: any) {
       console.error('Error fetching to-do items:', error.response?.data || error.message);
       alert('Failed to fetch to-do items. Please try again later.');
-      setTodolists([]); // Set empty array on error
+      // Don't clear state on error, just log it
+    }
+  };
+
+  const fetchTrashItems = async (): Promise<void> => {
+    try {
+      const response = await axios.get<Todo[]>('/todo/trash');
+      const trashArray = Array.isArray(response.data) ? response.data : [];
+      // Merge trash items with existing todos (avoid duplicates)
+      setTodolists((prevTodos) => {
+        const existingIds = new Set(prevTodos.map(t => t.id));
+        const newTrashItems = trashArray.filter(t => !existingIds.has(t.id));
+        return [...prevTodos, ...newTrashItems];
+      });
+    } catch (error: any) {
+      console.error('Error fetching trash items:', error.response?.data || error.message);
     }
   };
 
@@ -134,15 +173,22 @@ const TodoList: React.FC = () => {
 
   const handleToggleComplete = async (id: number, completed: boolean): Promise<void> => {
     try {
-      await axios.put(`/todo/${id}`, { completed: !completed });
+      const newCompleted = !completed;
+      await axios.put(`/todo/${id}`, { completed: newCompleted });
+      
+      // Update local state immediately for better UX
       setTodolists((prevTodolists) =>
         prevTodolists.map((todolist) =>
-          todolist.id === id ? { ...todolist, completed: !completed } : todolist
+          todolist.id === id ? { ...todolist, completed: newCompleted } : todolist
         )
       );
+      
+      showSuccessMsg(newCompleted ? 'Task completed! ✅' : 'Task marked as pending! ⏳');
     } catch (error: any) {
       console.error('Error toggling to-do item:', error.response?.data || error.message);
       alert('Failed to toggle to-do item. Please try again.');
+      // Refresh on error to restore correct state
+      await fetchTodolists();
     }
   };
 
@@ -176,23 +222,36 @@ const TodoList: React.FC = () => {
     if (!editingTodolistId) return;
 
     try {
-      await axios.put(`/todo/${editingTodolistId}`, { 
-        text: editingText,
-        expiry_date: editingExpiry || null
-      });
+      const updateData: any = { 
+        text: editingText.trim()
+      };
+      
+      if (editingExpiry) {
+        updateData.expiry_date = editingExpiry;
+      } else {
+        updateData.expiry_date = null;
+      }
+      
+      await axios.put(`/todo/${editingTodolistId}`, updateData);
+      
+      // Update local state immediately
       setTodolists((prevTodolists) =>
         prevTodolists.map((todolist) =>
           todolist.id === editingTodolistId ? { 
             ...todolist, 
-            text: editingText, 
+            text: editingText.trim(), 
             expiry_date: editingExpiry || null 
           } : todolist
         )
       );
+      
       setEditingTodolistId(null);
       setEditingText('');
       setEditingExpiry('');
       setShowEditModal(false);
+      
+      // Refresh from server to ensure consistency
+      await fetchTodolists();
       showSuccessMsg('Task updated! ✏️');
     } catch (error: any) {
       console.error('Error saving edited to-do item:', error.response?.data || error.message);
@@ -208,20 +267,32 @@ const TodoList: React.FC = () => {
   };
 
   const handleDeleteTodolist = async (id: number): Promise<void> => {
+    if (!window.confirm('Are you sure you want to delete this task? It will be moved to trash.')) {
+      return;
+    }
+    
     try {
+      const deletedAt = new Date().toISOString();
       await axios.put(`/todo/${id}`, { 
         is_deleted: true,
-        deleted_at: new Date().toISOString()
+        deleted_at: deletedAt
       });
+      
+      // Update local state immediately - keep item in state but mark as deleted
       setTodolists((prevTodolists) =>
         prevTodolists.map((todolist) =>
-          todolist.id === id ? { ...todolist, is_deleted: true, deleted_at: new Date().toISOString() } : todolist
+          todolist.id === id ? { ...todolist, is_deleted: true, deleted_at: deletedAt } : todolist
         )
       );
-      showSuccessMsg('Task moved to trash! 🗑️');
+      
+      // Refresh active todos (this will remove deleted items from active view)
+      await fetchTodolists();
+      showSuccessMsg('Task moved to trash! 🗑️ You can restore it from the Trash view.');
     } catch (error: any) {
       console.error('Error deleting to-do item:', error.response?.data || error.message);
       alert('Failed to delete to-do item. Please try again.');
+      // Refresh on error
+      await fetchTodolists();
     }
   };
 
@@ -231,15 +302,22 @@ const TodoList: React.FC = () => {
         is_deleted: false,
         deleted_at: null
       });
+      
+      // Update local state immediately
       setTodolists((prevTodolists) =>
         prevTodolists.map((todolist) =>
           todolist.id === id ? { ...todolist, is_deleted: false, deleted_at: null } : todolist
         )
       );
+      
+      // Refresh active todos to show restored item
+      await fetchTodolists();
       showSuccessMsg('Task restored! ♻️');
     } catch (error: any) {
       console.error('Error restoring to-do item:', error.response?.data || error.message);
       alert('Failed to restore to-do item. Please try again.');
+      // Refresh on error
+      await fetchTodolists();
     }
   };
 
@@ -250,11 +328,18 @@ const TodoList: React.FC = () => {
     
     try {
       await axios.delete(`/todo/${id}`);
+      
+      // Remove from local state immediately
       setTodolists((prevTodolists) => prevTodolists.filter((todolist) => todolist.id !== id));
+      
+      // Refresh trash items to ensure consistency
+      await fetchTrashItems();
       showSuccessMsg('Task permanently deleted! 🗑️');
     } catch (error: any) {
       console.error('Error permanently deleting to-do item:', error.response?.data || error.message);
       alert('Failed to permanently delete to-do item. Please try again.');
+      // Refresh on error
+      await fetchTrashItems();
     }
   };
 
@@ -297,7 +382,10 @@ const TodoList: React.FC = () => {
                   ? 'bg-white text-indigo-600' 
                   : 'bg-white/20 text-white hover:bg-white/30'
               }`}
-              onClick={() => setShowTrash(false)}
+              onClick={() => {
+                setShowTrash(false);
+                fetchTodolists(); // Refresh active todos when switching back
+              }}
             >
               Active
             </button>
@@ -307,9 +395,12 @@ const TodoList: React.FC = () => {
                   ? 'bg-white text-indigo-600' 
                   : 'bg-white/20 text-white hover:bg-white/30'
               }`}
-              onClick={() => setShowTrash(true)}
+              onClick={() => {
+                setShowTrash(true);
+                fetchTrashItems(); // Fetch trash items when switching to trash view
+              }}
             >
-              Trash
+              Trash {deletedTodos.length > 0 && `(${deletedTodos.length})`}
             </button>
           </div>
         </div>
@@ -362,14 +453,15 @@ const TodoList: React.FC = () => {
                     {index + 1}
                   </div>
                   <button
-                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold transition-colors text-xs sm:text-sm whitespace-nowrap ${
+                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold transition-all text-xs sm:text-sm whitespace-nowrap hover:shadow-md ${
                       todo.completed 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-yellow-100 text-yellow-700'
+                        ? 'bg-green-500 text-white hover:bg-green-600' 
+                        : 'bg-yellow-500 text-white hover:bg-yellow-600'
                     }`}
                     onClick={() => handleToggleComplete(todo.id, todo.completed)}
+                    title={todo.completed ? 'Mark as pending' : 'Mark as completed'}
                   >
-                    {todo.completed ? 'Completed' : 'Pending'}
+                    {todo.completed ? '✓ Completed' : '○ Pending'}
                   </button>
                 </div>
 

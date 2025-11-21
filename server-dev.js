@@ -25,7 +25,7 @@ const userProfileHandler = require('./api/users/profile/[id]');
 const userStatsHandler = require('./api/users/profile/[id]/stats');
 const userPasswordHandler = require('./api/users/profile/[id]/password');
 
-const PORT = 5000;
+const PORT = 5001;
 
 // Route mapping
 const routes = {
